@@ -219,7 +219,7 @@
         <li><a href="#skills">Skills</a></li>
         <li><a href="#background">Background</a></li>
         <li><a href="#contact">Contact</a></li>
-        <li><a class="nav-cta" href="Vishwanathan_N_FrontierEngineer_Resume.pdf" download="Vishwanathan_N_FrontierEngineer_Resume.pdf">Download resume</a></li>
+        <li><a class="nav-cta" href="resume/Vishwanathan_N_FrontierEngineer_Resume.pdf" download="Vishwanathan_N_FrontierEngineer_Resume.pdf" data-resume>Download resume</a></li>
       </ul>
     </div>
   </nav>
@@ -234,7 +234,7 @@
           <h1>Vishwanathan N</h1>
           <p class="hero-lead">I build enterprise GenAI solutions across RAG, agentic AI and Model Context Protocol (MCP), and turn business scenarios into grounded architectures, client demos and validation plans.</p>
           <div class="hero-actions">
-            <a class="btn btn-primary" href="resume/Vishwanathan_N_FrontierEngineer_Resume.pdf" download="resume/Vishwanathan_N_FrontierEngineer_Resume.pdf">
+            <a class="btn btn-primary" href="resume/Vishwanathan_N_FrontierEngineer_Resume.pdf" download="Vishwanathan_N_FrontierEngineer_Resume.pdf" data-resume>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 21h16"/></svg>
               Download resume
             </a>
@@ -393,7 +393,7 @@
           <div>
             <h2>Let's discuss your use case</h2>
             <p>Happy to walk through any of these solutions, adapt a pattern to your business scenario or share the full resume.</p>
-            <a class="btn btn-primary" href="Vishwanathan_N_FrontierEngineer_Resume.pdf" download="Vishwanathan_N_FrontierEngineer_Resume.pdf">
+            <a class="btn btn-primary" href="resume/Vishwanathan_N_FrontierEngineer_Resume.pdf" download="Vishwanathan_N_FrontierEngineer_Resume.pdf" data-resume>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 21h16"/></svg>
               Download resume (PDF)
             </a>
@@ -419,8 +419,29 @@
 
   <script>
     document.getElementById('yr').textContent = new Date().getFullYear();
+
+    // Resume download: save the file directly; if the browser or host blocks that, open the PDF in a new tab.
+    document.querySelectorAll('[data-resume]').forEach(function (el) {
+      el.addEventListener('click', function (e) {
+        e.preventDefault();
+        var url = el.getAttribute('href');
+        var name = el.getAttribute('download') || 'resume.pdf';
+        fetch(url)
+          .then(function (r) { if (!r.ok) throw new Error('not found'); return r.blob(); })
+          .then(function (blob) {
+            var a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = name;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+          })
+          .catch(function () { window.open(url, '_blank', 'noopener'); });
+      });
+    });
   </script>
 </body>
 
-</html>
-
+  </html>
+  
